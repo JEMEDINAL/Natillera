@@ -1,0 +1,17 @@
+@media screen and (min-width:992px){
+    .nav-item {
+    line-height:80px;
+    }
+  }
+
+  .all{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .nn{
+    margin-left: 15px;
+  }
+
+
+
