@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,62 +9,67 @@
     <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
     <title>{% block titulo %} .... {% endblock titulo %}</title>
 </head>
-<body >
-    <nav class="navbar navbar-expand-lg navbar-dark p-3 bg-danger" id="headerNav">
-        <div class="container-fluid">
-          <a class="navbar-brand d-block d-lg-none" href="#">
-            <img src="{% static "app/img/descarga.png" %}" height="80" />
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-      
-          <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mx-auto ">
-              <li class="nav-item">
-                <a class="nav-link mx-2 active" aria-current="page" href="#">Historia</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link mx-2 " aria-current="page" href="#">Preguntas</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link mx-2 " aria-current="page" href="#">Precio</a>
-              </li>
-              <li class="nav-item d-none d-lg-block">
-                <a class="nav-link mx-2" href="#">
-                  <img src="{% static "app/img/descarga.png" %}" height="80" />
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link mx-2" href="#">Como funciona</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Videos
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="#">Blog</a></li>
-                  <li><a class="dropdown-item" href="#">About Us</a></li>
-                  <li><a class="dropdown-item" href="#">Contact us</a></li>
+
+<body>
+    <div class="header__superior">
+        <div class="logo">
+            <a href="{% url 'inicio' %}">Nati familia</a>
+        </div>
+    
+    </div>
+
+    <div class="container__menu">
+
+        <div class="menu">
+            <input type="checkbox" id="check__menu">
+            <label for="check__menu" id="label__check">
+                <i class="fas fa-bars icon__menu"></i>
+            </label>
+            <nav>
+                <ul>
+                    <li><a href="#" id="selected"></a></li>
+                    <li><a href="#">Videos</a>
+                        <ul>
+                            <li><a href="#">Configuracion de la polla</a></li>
+                            <li><a href="#">Creando el Primer Socio</a></li>
+                            <li><a href="#">Diferencia Personas y Socios</a></li>
+                            <li><a href="#">Prestamos Faciles a 8,10,11 o 12 cuotas</a></li>
+                            <li><a href="#">Prestamo Simple</a></li>
+                            <li><a href="#">Reintegrar Socio Retirado</a></li>
+                            <li><a href="#">Cambio de Consecutivo entre los Socios</a></li>
+                            <li><a href="#">Recibo de Caja x Mensaje de Texto</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Nosotros</a></li>
+                    <li><a href="#">Precio</a></li>
+                    <li><a href="#">Preguntas</a></li>
+                    <li><a href="#">Contactos</a></li>
+                    <li><a href="#">Acceder</a></li>
+                    <li><a href="#">Registro</a></li>
+
+                
+            
                 </ul>
-              </li>
-            </ul>
-          </div>
+            
+            </nav>
+           
+        
         </div>
+    </div>
+ 
 
-        <div class = "all">
-        <div class="btn-position">
-          <button type="button" class="btn btn-success">login</button>
-        </div>
 
-        <div class="nn">
-          <button type="button" class="btn btn-primary">Registrarse</button>
-        </div>
-      </div>
-      </nav>
 
-      {% block contenedor %}{% endblock contenedor %}
-      <script src="{% static 'app/js/libreria.js' %}"></script>
-      <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
+<div id="ho">
+    {% block contenedor %}
+
+
+    {% endblock contenedor %}
+</div>
+
+
+    <script src="{% static 'app/js/libreria.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
 </body>
+
 </html>
