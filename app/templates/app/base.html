@@ -27,7 +27,7 @@
             </label>
             <nav>
                 <ul>
-                    <li><a href="#" id="selected"></a></li>
+                    <li><a href="{% url 'inicio' %}" id="selected"></a></li>
                     <li><a href="#">Videos</a>
                         <ul>
                             <li><a href="#">Configuracion de la polla</a></li>
@@ -45,6 +45,7 @@
                     <li><a href="#">Preguntas</a></li>
                     <li><a href="#">Contactos</a></li>
                     {% if logueo %}
+                    <li><a href="{% url 'crear_natillera' %}">Crear natillera</a></li>
                     <li><a href="#">{{ request.session.logueo.nombre }}</a>
                         <ul>
                             <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
@@ -79,12 +80,12 @@
     {% endfor %}
     {% endif %}
 
-    <div id="ho">
+ 
         {% block contenedor %}
 
 
         {% endblock contenedor %}
-    </div>
+   
 
 
     <script src="{% static 'app/js/libreria.js' %}"></script>

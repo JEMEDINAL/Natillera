@@ -1,0 +1,46 @@
+{% extends "app/base.html" %}
+
+{% block titulo %}Crear natillera{% endblock titulo %}
+{% block contenedor %}
+<div class="container">
+    <h1>Crear Natillera</h1> 
+    
+    <ul>
+        <li>Usted sera el administrador de la natillera, y reunira socios</li>
+        <li>Si usted es Socio no debe seguir en este modulo, es el administrador el que crea su cuenta</li>
+        <li>Usted de ahora en adelante sera el administrador o Lider de la natillera que va a crear, y sera responsable de los dineros que los socios confien en usted</li>
+    </ul>
+    <form>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="address">Dirección</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="phone">Teléfono</label>
+        <input type="text" id="phone" name="phone" required>
+
+        <label for="condition">Condiciones</label>
+        <input type="text" id="condition" name="condition" required>
+
+        <label for="quota_frequency">Periodicidad de Cuotas</label>
+        <select id="quota_frequency" name="quota_frequency" required>
+            <option value="Semanal">Semanal</option>
+            <option value="Decadal">Decadal</option>
+            <option value="Quincenal">Quincenal</option>
+            <option value="Mensula">Mensual</option>
+            <option value="Bimestral">Bimestral</option>
+           
+        </select>
+
+        <label for="currency">Moneda</label>
+        <select id="currency" name="currency" required>
+            <option value="colombian_pesos">Pesos Colombianos</option>
+            <option value="us_dollars">Dólares</option>
+            <option value="euros">Euros</option>
+        </select>
+
+        <button type="submit">Crear</button>
+    </form>
+</div>
+{% endblock contenedor %}

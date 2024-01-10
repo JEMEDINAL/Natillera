@@ -2,10 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def inicio(request):
-    return render(request, "app/index.html")
- 
+    context = {'logueo': request.session.get('logueo', None)}
+    return render(request, "app/index.html", context) 
+
+
 def iniciar_sesion(request):
     return render(request, "app/login.html")
     
@@ -62,4 +67,10 @@ def sign_up(request):
             return redirect('Registrarse')
 
     return render(request, 'app/sing_up.html')
+
+@login_required
+def crear_natillera(request):
+    # La vista solo llegará a este punto si el usuario está autenticado
+    context = {'logueo': request.session.get('logueo', None)}
+    return render(request, 'app/menu_natillera/crear_natillera.html', context)
     
