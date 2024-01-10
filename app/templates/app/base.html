@@ -15,7 +15,7 @@
         <div class="logo">
             <a href="{% url 'inicio' %}">Nati familia</a>
         </div>
-    
+
     </div>
 
     <div class="container__menu">
@@ -44,28 +44,47 @@
                     <li><a href="#">Precio</a></li>
                     <li><a href="#">Preguntas</a></li>
                     <li><a href="#">Contactos</a></li>
-                    <li><a href="#">Acceder</a></li>
-                    <li><a href="#">Registro</a></li>
+                    {% if logueo %}
+                    <li><a href="#">{{ request.session.logueo.nombre }}</a>
+                        <ul>
+                            <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
+                            <li><a href="#">Cambio de contraseña</a></li>
+                            <li><a href="#">Diferencia Personas y Socios</a></li>
+                        </ul>
+                    </li>
+                        {% else %}
+                    <li><a href="{% url 'iniciar' %}">Acceder</a></li>
+                    <li><a href="{% url 'Registrarse' %}">Registro</a></li>
+                    {% endif %}
 
-                
-            
+
+
+
                 </ul>
-            
+
             </nav>
-           
-        
+
+
         </div>
     </div>
- 
 
 
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
 
-<div id="ho">
-    {% block contenedor %}
+    <div id="ho">
+        {% block contenedor %}
 
 
-    {% endblock contenedor %}
-</div>
+        {% endblock contenedor %}
+    </div>
 
 
     <script src="{% static 'app/js/libreria.js' %}"></script>

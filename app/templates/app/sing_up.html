@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
+  <title>Document</title>
+</head>
+<body>
+  
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+      role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+
+  <form class="form" method="post" action="{% url 'Registrarse' %}">
+    {% csrf_token %}
+    <h2 class="form__tittle">Registrarse</h2>
+
+
+    <div class="form__container">
+        <div class="form__group">
+            <input type="text" id="name" class="form__input" name="nombre" placeholder=" ">
+            <label for="name" class="form__label">Nombre: </label>
+            <span class="form__line"></span>
+          </div>
+        <div class="form__group">
+            <input type="text" id="lastname" class="form__input" name="apellido" placeholder=" ">
+            <label for="lastname" class="form__label">Apellido: </label>
+            <span class="form__line"></span>
+          </div>
+      <div class="form__group">
+        <input type="text" id="Correo" class="form__input" name="correo" placeholder=" ">
+        <label for="correo" class="form__label">Correo: </label>
+        <span class="form__line"></span>
+      </div>
+      <div class="form__group">
+        <input type="password" id="password" class="form__input" name="clave"placeholder=" ">
+        <label for="password" class="form__label">Contraseña: </label>
+        <span class="form__line"></span>
+      </div>
+      <div class="form__group">
+        <input type="password" id="password" class="form__input" name="clave2"placeholder=" ">
+        <label for="password" class="form__label">Contraseña otra vez: </label>
+        <span class="form__line"></span>
+      </div>
+
+      <a href="{% url 'inicio' %}" type="bottom">Regrasar a iniciar sesion</a>
+        <input type="submit" class="form__submit" value="Registrarse">
+    </div>
+  </form>
+  <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

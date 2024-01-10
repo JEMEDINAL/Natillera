@@ -61,7 +61,7 @@ nav > ul{
     display: flex;
 }
 
-nav ul li{
+nav  ul  li{
     height: 100%;
     list-style: none;
     position: relative;
@@ -161,27 +161,6 @@ nav ul li ul li a:hover{
     padding-left: 30px;
     font-size: 14px;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
-}
-
-/*ARTICULO*/
-
-main{
-    background: #f0f0f0;
-    padding: 40px 20px;
-    margin-top: 194px;
-}
-
-article{
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 40px;
-    background: #fff;
-}
-
-article p{
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: 300;
 }
 
 /*ELEMENTOS RESPONSIVOS*/
@@ -412,18 +391,6 @@ nav a {
   top: 147px;
   left: 112px;
 }
-
-/*
-.estado{
-  color: white ;
-  width: 198px;
-  height: 30px;
-  border: 1px solid red;
-  position: relative;
-  left: 20px;
-  top: 35px;
-}
-*/
 .img{
   color: white ;
   width: 175px;
