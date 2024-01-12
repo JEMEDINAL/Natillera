@@ -1,25 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'app/css/estilos.css' %}">
     <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
-    <title>{% block titulo %} .... {% endblock titulo %}</title>
+    <title>Document</title>
 </head>
-
 <body>
     <div class="header__superior">
         <div class="logo">
-            <a href="{% url 'inicio' %}">Nati familia</a>
+            <a >Nati familia</a>
         </div>
-
     </div>
-
     <div class="container__menu">
-
         <div class="menu">
             <input type="checkbox" id="check__menu">
             <label for="check__menu" id="label__check">
@@ -62,39 +57,14 @@
                     <li><a href="{% url 'iniciar' %}">Acceder</a></li>
                     <li><a href="{% url 'Registrarse' %}">Registro</a></li>
                     {% endif %}
-
-
-
-
                 </ul>
-
             </nav>
-
-
         </div>
     </div>
 
-
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
-        role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-    {% endif %}
-
- 
-        {% block contenedor %}
-
-
-        {% endblock contenedor %}
-   
-
-
+    <h1>{{ natillera.id }}</h1>
+    <h1>{{ natillera.nombre }}</h1>
     <script src="{% static 'app/js/libreria.js' %}"></script>
     <script src="{% static 'app/js/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

@@ -1,0 +1,32 @@
+{% extends "app/base.html" %}
+
+
+{% block titulo %}Elige natillera{% endblock titulo %}
+{% block contenedor %}
+    
+    <div class="table_nati">
+        <h2>Elige tu natillera</h2>
+       <table class="table" >
+        <thead>
+            <tr>
+                <th>Codigo </th>
+                <th>Nombre</th>
+                <th>Opcion</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    <td>{{ nati_usuario.codigo }}</td>
+                    <td>{{ nati_usuario.nombre }}</td>
+                    <td><input type="radio" value="{{ nati_usuario.id }}" ></td>
+                 
+                </tr>
+            
+
+        </tbody>
+
+       </table>
+       <a type="buttom" href="{% url 'socios_y_personas' nati_usuario.id %}">Enviar</a>
+    </div>
+    {% endblock contenedor %}

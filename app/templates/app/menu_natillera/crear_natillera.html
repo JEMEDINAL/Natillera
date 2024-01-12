@@ -10,7 +10,9 @@
         <li>Si usted es Socio no debe seguir en este modulo, es el administrador el que crea su cuenta</li>
         <li>Usted de ahora en adelante sera el administrador o Lider de la natillera que va a crear, y sera responsable de los dineros que los socios confien en usted</li>
     </ul>
-    <form>
+    <a href="{% url 'inicio' %}">Volver al inicio</a>
+    <form action="{% url 'crear_natillera' %}" method="post">
+        {% csrf_token %}
         <label for="name">Nombre</label>
         <input type="text" id="name" name="name" required>
 
@@ -24,7 +26,7 @@
         <input type="text" id="condition" name="condition" required>
 
         <label for="quota_frequency">Periodicidad de Cuotas</label>
-        <select id="quota_frequency" name="quota_frequency" required>
+        <select id="quota_frequency" name="Periodicidad" required>
             <option value="Semanal">Semanal</option>
             <option value="Decadal">Decadal</option>
             <option value="Quincenal">Quincenal</option>
@@ -40,7 +42,7 @@
             <option value="euros">Euros</option>
         </select>
 
-        <button type="submit">Crear</button>
+        <button type="submit" class="btn_nati">Crear</button>
     </form>
 </div>
 {% endblock contenedor %}
