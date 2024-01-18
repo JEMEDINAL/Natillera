@@ -9,6 +9,9 @@ urlpatterns = [
     path('inicio/', views.iniciar_sesion, name='iniciar'),
     path('crear_natillera/', views.crear_natillera, name='crear_natillera'),
     path("listar_natillera/", views.nati_usuario, name="listar"),
-    path("socios_y_personas/<int:natillera_id>/", views.personas_y_socios, name="socios_y_personas"),
-    
+    path("propiedad_natillera/<int:natillera_id>/", views.propiedad_natillera, name="propiedad_natillera"),
+    path("crear_persona/", views.personas_crear, name="crear_persona"),
+    path("crear_socio/", views.socio_crear, name="crear_socio"),
+    path("lista_personas/", views.json_personas, name='lista_personas'),
+    path("lista_socios/", views.json_socio, name='lista_socios'),
 ]

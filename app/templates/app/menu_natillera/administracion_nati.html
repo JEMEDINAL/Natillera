@@ -1,0 +1,195 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+
+{% load static %}
+
+{% block contenido %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+<div class="tablas" >
+    <div class="tabla">
+        <h3>Personas</h3>
+        <a class="btn btn-success boton" data-bs-toggle="modal" data-bs-target="#crear_persona">Crear Persona</a>
+        <table class="table" id="table_personas">
+            <thead>
+                <tr>
+                    <th>Codigo </th>
+                    <th>Nombre</th>
+                    <th>apellido</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody id='personas'>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="tabla">
+        <h3>Socios</h3>
+        <a class="btn btn-success boton" data-bs-toggle="modal" data-bs-target="#crear_socio">Crear Socio</a>
+        <table class="table" id="table_socios">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Cuota</th>
+                    <th>Ciclo</th>
+                    <th>Codigo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="socios">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+
+
+
+
+<div class="estados">
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+    <button type="button" class="btn btn-primary btn-lg"><span><svg xmlns="http://www.w3.org/2000/svg" class="user"
+                width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+            </svg></span> boton</button>
+</div>
+
+
+
+<!--modales-->
+<!--crear persona-->
+<div class="modal fade" id="crear_persona" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crear Persona</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'crear_persona' %}" class="inputs" method="post">
+                {% csrf_token %}
+          <label for="">Natillera:</label>
+          <input type="text" value="{{ natillera.id }}" name="natillera" style="display: none;" readonly>
+          <input type="text" value="{{ natillera.nombre }}" name="natille" readonly>
+          <label for="">Nombre:</label>
+          <input type="text" name="nombre">
+          <label for="">Apellido:</label>
+          <input type="text" name="apellido">
+          <label for="">Codigo</label>
+          <input type="text" value="Nuevo codigo" readonly disabled>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-success" href="#">crear persona</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--crear Crear socio-->
+<div class="modal fade" id="crear_socio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crear socio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'crear_socio' %}" class="inputs" method="post">
+              {% csrf_token %}
+                <label for="">Natillera:</label>
+                <input type="text" value="{{ natillera.id }}" name="natillera" style="display: none;" readonly>
+                <input type="text" value="{{ natillera.nombre }}" name="natille" readonly>
+                <label for="">Nombre:</label>
+                <input type="text" name="nombre">
+                <label for="">Apellido:</label>
+                <input type="text" name="apellido">
+                <label for="">Codigo</label>
+                <label for="currency">Periodicidad</label>
+                <select id="currency" name="periodicidad" required>
+                <option value="semanal">semanal</option>
+                <option value="Decadal">Decadal</option>
+                <option value="Quincenal">Quincenal</option>
+                <option value="Mensual">Mensual</option>
+                <option value="Bimensula">Bimensula</option>
+                <option value="Trimestral">Trimestral</option>
+                </select>
+                <label for="currency">Cuota</label>
+                <select id="currency" name="cuota" required>
+                  <option value="10.000.00">10.000</option>
+                  <option value="20.000.00">20.000</option>
+                  <option value="30.000.00">30.000.00</option>
+                  <option value="40.000.00">40.000.00</option>
+                  <option value="50.000.00">50.000.00</option>
+                  <option value="60,000.00">60,000.00</option>
+                  <option value="70,000.00">70,000.00</option>
+                  <option value="80,000.00">80,000.00</option>
+                  <option value="90,000.00">90,000.00</option>
+                  <option value="100,000.00">100,000.00</option>
+                  <option value="110,000.00">110,000.00</option>
+                  <option value="120,000.00">120,000.00</option>
+                  <option value="130,000.00">130,000.00</option>
+                  <option value="140,000.00">140,000.00</option>
+                  </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Crear socio</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+{% endblock contenido %}

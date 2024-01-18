@@ -29,16 +29,22 @@ class Persona(models.Model):
     codigo = models.IntegerField(validators=[MaxValueValidator(99999999)], unique=True)
     
     
+    
     def __str__(self):
         return self.nombre
     
+    
 
 class Socio(models.Model):
-    Natillera = models.ForeignKey(Natillera, on_delete=models.CASCADE)
-    persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
+    natillera = models.ForeignKey(Natillera, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=256, default='valor_predeterminado')
+    apellido = models.CharField(max_length=256, default='valor_predeterminado')
     periodicidad = models.CharField(max_length=50)
     cuota = models.DecimalField(max_digits=10, decimal_places=2)
+    codigos = models.IntegerField(validators=[MaxValueValidator(99999999)], unique=True, default=0) 
+    activo = models.BooleanField(default=True)
+
     
     
     def __str__(self):
-        return self.persona
+        return self.nombre

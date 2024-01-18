@@ -20,4 +20,4 @@ class PersonaAdmin(admin.ModelAdmin):
     
 @admin.register(Socio)
 class SocioAdmin(admin.ModelAdmin):
-    list_display = ['id', 'periodicidad','cuota']
+    list_display = ['id', 'natillera','codigos','nombre','apellido','periodicidad','cuota']

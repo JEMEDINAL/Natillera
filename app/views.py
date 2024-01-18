@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.http.response import JsonResponse
+from django.core.serializers import serialize
 import random
 from django.core.exceptions import ValidationError
 
-@login_required
+
 def inicio(request):
     usuario_actual_dict = request.session.get('logueo', None)
     if usuario_actual_dict is not None:
@@ -26,7 +26,7 @@ def inicio(request):
 
 def iniciar_sesion(request):
     return render(request, "app/login.html")
-    
+
 def login(request):
     if request.method == 'POST':
         user = request.POST.get('correo')
@@ -68,8 +68,6 @@ def sign_up(request):
         if clave1 != clave2:
             messages.error(request, 'Las contraseñas no coinciden.')
             return redirect('Registrarse')
-
-        # Crear un nuevo usuario
         try:
             user = User(nombre=nombre,apellido=apellido,correo=correo,clave=clave1)
             user.save()
@@ -81,9 +79,11 @@ def sign_up(request):
 
     return render(request, 'app/sing_up.html')
 
-@login_required
+
 def crear_natillera(request):
     usuario_actual_dict = request.session.get('logueo', None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
     if usuario_actual_dict is None:
         return redirect('login')
     user_id = usuario_actual_dict.get('id', None)
@@ -119,9 +119,11 @@ def crear_natillera(request):
     return render(request, 'app/menu_natillera/crear_natillera.html', context)
 
 
-@login_required
+
 def nati_usuario(request):
     usuario_actual_dict = request.session.get('logueo', None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
     if usuario_actual_dict is not None:
         usuario_id = usuario_actual_dict.get('id', None)
         if usuario_id is not None:
@@ -139,12 +141,105 @@ def nati_usuario(request):
     return render(request, 'app/menu_natillera/elige_natillera.html',context)
 
 
-@login_required
-def personas_y_socios(request, natillera_id):
+def propiedad_natillera(request, natillera_id):
     usuario_actual_dict = request.session.get('logueo', None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
     natillera = Natillera.objects.get(id=natillera_id)
-    
-    # Puedes agregar más lógica aquí según tus necesidades
-    
     context = {'natillera': natillera, 'logueo': usuario_actual_dict}
-    return render(request, 'app/menu_natillera/persona_socios.html', context)
+    return render(request, 'app/menu_natillera/administracion_nati.html', context)
+
+
+
+def json_personas(request):
+    usuario_actual_dict = request.session.get('logueo', None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
+    if usuario_actual_dict is not None:
+        usuario_id = usuario_actual_dict.get('id', None)
+        if usuario_id is not None:
+            try:
+                natillera_usuario = Natillera.objects.get(usuario=usuario_id)
+                tiene_natillera = True
+            except Natillera.DoesNotExist:
+                tiene_natillera = False
+    natillera_id = natillera_usuario.id 
+    natillera = Natillera.objects.get(id=natillera_id)
+    personas = Persona.objects.filter(natillera=natillera)
+    lista_personas = lista_personas = [{'nombre': persona.nombre, 'apellido': persona.apellido,'codigo': persona.codigo} for persona in personas]
+    data = {'personas': lista_personas}
+    return JsonResponse(data)
+
+def json_socio(request):
+    usuario_actual_dict = request.session.get('logueo', None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
+    if usuario_actual_dict is not None:
+        usuario_id = usuario_actual_dict.get('id', None)
+        if usuario_id is not None:
+            try:
+                natillera_usuario = Natillera.objects.get(usuario=usuario_id)
+                tiene_natillera = True
+            except Natillera.DoesNotExist:
+                tiene_natillera = False
+    natillera_id = natillera_usuario.id 
+    natillera = Natillera.objects.get(id=natillera_id)
+    socios = Socio.objects.filter(natillera=natillera)
+    lista_socios = [{'id':socio.id,'nombre': socio.nombre, 'apellido': socio.apellido,'codigo': socio.codigos,'ciclo':socio.periodicidad,'cuota':socio.cuota} for socio in socios]
+    data = {'socios': lista_socios}
+    return JsonResponse(data)
+
+
+
+def personas_crear(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    if usuario_actual_dict == None:
+        return render(request, 'app/index.html')
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        numero = random.randint(10000000,99999999)
+        natillera_id = request.POST.get('natillera')
+        codigo = numero
+        natillera = Natillera.objects.get(id=natillera_id)
+        try:
+            nueva_pesona = Persona(natillera=natillera , nombre=nombre,
+            apellido=apellido,codigo=codigo)
+            nueva_pesona.save()
+            messages.success(request, 'Registro exitoso.')
+            return redirect('propiedad_natillera', natillera_id)
+        except ValidationError as e:
+            messages.error(request, 'Registro inválido')
+            return redirect('propiedad_natillera', natillera_id)
+        
+
+def socio_crear(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    if usuario_actual_dict == None:
+        return render(request, 'app/index.html')
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        periodicidad = request.POST.get('periodicidad')
+        cuota = request.POST.get('cuota')
+        cuota = cuota.replace('.', '').replace(',', '.')
+        natillera_id = request.POST.get('natillera')
+        numero = random.randint(10000000,99999999)
+        codigo = numero
+        personas_nati_actual = Persona.objects.filter(nombre=nombre,apellido=apellido)
+        natillera = Natillera.objects.get(id=natillera_id)
+        if personas_nati_actual.exists():
+            primera_persona = personas_nati_actual.first()
+            if primera_persona.nombre.lower() and primera_persona.apellido.lower() == nombre.lower() and apellido.lower():
+                messages.error(request, "ya hay una persona igual de le en la flcha para convertirlo en socio a esta persona")
+        else:
+            nuevo_socio = Socio(natillera=natillera,nombre=nombre,apellido=apellido,codigos=codigo,periodicidad=periodicidad,cuota=cuota,activo=True)
+            nueva_persona = Persona(natillera=natillera,nombre=nombre,apellido=apellido,codigo=codigo)
+            nueva_persona.save()
+            nuevo_socio.save()
+            messages.success(request, 'Registro exitoso.')
+    return redirect('propiedad_natillera', natillera_id)
+        
+            
+       
+
