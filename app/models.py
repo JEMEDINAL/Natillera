@@ -43,6 +43,13 @@ class Socio(models.Model):
     cuota = models.DecimalField(max_digits=10, decimal_places=2)
     codigos = models.IntegerField(validators=[MaxValueValidator(99999999)], unique=True, default=0) 
     activo = models.BooleanField(default=True)
+    pais = models.CharField(max_length=256,blank=True, null=True) 
+    departamento = models.CharField(max_length=256,blank=True, null=True)
+    ciudad = models.CharField(max_length=256,blank=True, null=True)
+    Celular = models.CharField(max_length=20,blank=True, null=True)
+    correo = models.CharField(max_length=256,blank=True, null=True)
+    capital = models.IntegerField(blank=True, null=True)
+    fecha_cuota = models.DateField( blank=True, null=True)
 
     
     

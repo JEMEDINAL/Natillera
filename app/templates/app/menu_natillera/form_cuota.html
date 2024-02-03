@@ -1,0 +1,42 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+{% load static %}
+{% block titulo %}Dar cuota{% endblock %}
+{% block contenido %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+<div class="form-container mt-2">
+  <h2>Recibo de caja</h2>
+  <h3>Socio: {{ socio.nombre }}</h3>
+  <h6>Codigo Socio: {{ socio.codigos }}</h6>
+  <h6>id: {{ socio.id }}</h6>
+  
+    <form method="post" action="{% url 'dar_cuota_form' %}">
+      {% csrf_token %}
+      <label for="fecha">Fecha:</label>
+      <input type="date" id="fecha" name="fecha">
+      <input type="text" style="display: none;" id="fecha" name="id" value="{{ socio.id }}">
+      <input type="text" id="fecha"  style="display: none;" name="natillera" value="{{ natillera.id }}">
+      <label for="cuota">Cuota:</label>
+      <input type="text" id="cuota" name="cuota"  value="{{ socio.cuota }}" readonly disabled>
+      <label for="total">Total:</label>
+      <input type="number" id="total" name="total">
+      <label for="pagar">Me pagan con:</label>
+      <select id="pagar" name="pagar">
+        <option value="recibo">Recibo de Caja</option>
+        <option value="efectivo">Efectivo</option>
+        <option value="transferencia">Transferencia</option>
+      </select>
+      <label for="capital">Capital:</label>
+      <input type="text" id="capital" name="capital" value="{{ socio.capital }}" readonly disabled>
+      <input type="submit" value="Enviar">
+    </form>
+  </div>
+
+{% endblock contenido %}

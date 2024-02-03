@@ -1,0 +1,80 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+
+{% load static %}
+{% block titulo %}Perfil socio{% endblock titulo %}
+
+{% block contenido %}
+{% if messages %}
+{% for message in messages %}
+<div
+  class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+  role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+<form class="formulario" action="{% url 'editar_socio' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="numero">#</label>
+    <input type="text" class="form-control" name="id" id="id" placeholder="Número" value="{{ todo_socio.id }}">
+  </div>
+  <div class="form-group">
+    <label for="nombre">Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
+      value="{{ todo_socio.nombre }}">
+  </div>
+  <div class="form-group">
+    <label for="telegramEnlace">Apellido</label>
+    <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido"
+      value="{{ todo_socio.apellido }}">
+  </div>
+  <div class="form-group">
+    <label for="pais">País</label>
+    <select name="pais" id="pais" value="{{ todo_socio.pais }}">
+      <option value="Colombia">colombia</option>
+      <option value="Peru">Peru</option>
+      <option value="Ecuador">Ecuador</option>
+      <option value="Argentina">Argentina</option>
+      <option value="Bolivia">Bolivia</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <input type="text" value="{{ natillera.id }}" name="natillera" style="display: none;" readonly>
+    <label for="cuota">Cuota</label>
+    <input type="text" class="form-control" id="cuota" name="cuota" placeholder="Cuota" value="{{ todo_socio.cuota }}">
+  </div>
+  <div class="form-group">
+    <label for="apellido">Correo</label>
+    <input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" value="{{ todo_socio.correo }}">
+  </div>
+  <div class="form-group">
+    <label for="mensajesTexto">Codigo</label>
+    <input type="text" class="form-control" id="mensajesTexto" name="codigo" value="{{ todo_socio.codigos }}" readonly>
+  </div>
+  <div class="form-group">
+    <label for="estadoDepto">Departamento</label>
+    <input type="text" class="form-control" id="departamento" name="departamento" placeholder="Departamento"
+      value="{{ todo_socio.departamento }}">
+  </div>
+  <div class="form-group">
+    <label for="periodicidad">Periodicidad</label>
+    <input type="text" class="form-control" id="periodicidad" name="periodicidad" placeholder="Periodicidad"
+      value="{{ todo_socio.periodicidad }}">
+  </div>
+  <div class="form-group">
+    <label for="ciudad">Ciudad</label>
+    <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Ciudad" value="{{ todo_socio.ciudad }}">
+  </div>
+  <div class="form-group">
+    <label for="telefono">Celular</label>
+    <input type="text" class="form-control" id="telefono" name="celular" placeholder="celular" value="{{ todo_socio.Celular }}">
+    <a href="{% url 'propiedad_natillera' natillera.id%}" class="btn btn-primary mt-2">volver a la natillera</a>
+  </div>
+  <button type="submit" class="btn btn-success">Enviar</button>
+</form>
+
+
+
+{% endblock contenido %}

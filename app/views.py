@@ -145,8 +145,13 @@ def propiedad_natillera(request, natillera_id):
     usuario_actual_dict = request.session.get('logueo', None)
     if usuario_actual_dict == None :
         return render(request, 'app/index.html')
-    natillera = Natillera.objects.get(id=natillera_id)
-    context = {'natillera': natillera, 'logueo': usuario_actual_dict}
+    natillera = Natillera.objects.get(pk=natillera_id)
+    socios = Socio.objects.filter(natillera=natillera)
+    contador = 0
+    for socio in socios:
+        if socio.activo == True:
+            contador += 1
+    context = {'natillera': natillera, 'logueo': usuario_actual_dict,"activos":contador}
     return render(request, 'app/menu_natillera/administracion_nati.html', context)
 
 
@@ -166,7 +171,7 @@ def json_personas(request):
     natillera_id = natillera_usuario.id 
     natillera = Natillera.objects.get(id=natillera_id)
     personas = Persona.objects.filter(natillera=natillera)
-    lista_personas = lista_personas = [{'nombre': persona.nombre, 'apellido': persona.apellido,'codigo': persona.codigo} for persona in personas]
+    lista_personas = lista_personas = [{'id': persona.id,'nombre': persona.nombre, 'apellido': persona.apellido,'codigo': persona.codigo} for persona in personas]
     data = {'personas': lista_personas}
     return JsonResponse(data)
 
@@ -185,7 +190,8 @@ def json_socio(request):
     natillera_id = natillera_usuario.id 
     natillera = Natillera.objects.get(id=natillera_id)
     socios = Socio.objects.filter(natillera=natillera)
-    lista_socios = [{'id':socio.id,'nombre': socio.nombre, 'apellido': socio.apellido,'codigo': socio.codigos,'ciclo':socio.periodicidad,'cuota':socio.cuota} for socio in socios]
+    lista_socios = [{'id':socio.id,'nombre': socio.nombre, 'apellido': socio.apellido,
+                     'codigo': socio.codigos,'ciclo':socio.periodicidad,'cuota':socio.cuota,'activo':socio.activo} for socio in socios]
     data = {'socios': lista_socios}
     return JsonResponse(data)
 
@@ -218,28 +224,116 @@ def socio_crear(request):
     if usuario_actual_dict == None:
         return render(request, 'app/index.html')
     if request.method == 'POST':
+        argumento = request.POST.get('argumento')
         nombre = request.POST.get('nombre')
         apellido = request.POST.get('apellido')
         periodicidad = request.POST.get('periodicidad')
         cuota = request.POST.get('cuota')
-        cuota = cuota.replace('.', '').replace(',', '.')
+        
         natillera_id = request.POST.get('natillera')
         numero = random.randint(10000000,99999999)
         codigo = numero
-        personas_nati_actual = Persona.objects.filter(nombre=nombre,apellido=apellido)
+        personas_nati_actual = Persona.objects.filter(natillera=natillera_id)
         natillera = Natillera.objects.get(id=natillera_id)
-        if personas_nati_actual.exists():
-            primera_persona = personas_nati_actual.first()
-            if primera_persona.nombre.lower() and primera_persona.apellido.lower() == nombre.lower() and apellido.lower():
-                messages.error(request, "ya hay una persona igual de le en la flcha para convertirlo en socio a esta persona")
-        else:
-            nuevo_socio = Socio(natillera=natillera,nombre=nombre,apellido=apellido,codigos=codigo,periodicidad=periodicidad,cuota=cuota,activo=True)
-            nueva_persona = Persona(natillera=natillera,nombre=nombre,apellido=apellido,codigo=codigo)
-            nueva_persona.save()
+        if personas_nati_actual.filter(nombre__iexact=nombre, apellido__iexact=apellido,natillera=natillera_id).exists() and argumento == 'boton':
+            messages.error(request, "Ya hay una persona igual. Utiliza la flecha para convertirla en socio a esta persona")
+        elif argumento == 'flecha':
+            old_cod = request.POST.get('codigo')
+            nuevo_socio = Socio(natillera=natillera,nombre=nombre,apellido=apellido,codigos=old_cod,periodicidad=periodicidad,cuota=cuota,activo=True)
             nuevo_socio.save()
             messages.success(request, 'Registro exitoso.')
+        else:
+            nuevo_socio = Socio(natillera=natillera,nombre=nombre,apellido=apellido,codigos=codigo,periodicidad=periodicidad,cuota=cuota,activo=True)
+            nuevo_socio.save()
+            nueva_persona = Persona(natillera=natillera,nombre=nombre,apellido=apellido,codigo=codigo)
+            nueva_persona.save()
+            messages.success(request, 'Registro exitoso.')
     return redirect('propiedad_natillera', natillera_id)
+    
+    
+    
+def propiedad_socio(request, socio_id):
+    usuario_actual_dict = request.session.get('logueo',None)
+    natillera  = Natillera.objects.get(usuario=usuario_actual_dict['id'])
+    todo_socio = Socio.objects.get(pk=socio_id)
+    context = {'todo_socio':todo_socio,'natillera':natillera}
+    return render(request, 'app/menu_natillera/propiedades_socio.html',context)
+
+def editar_socio(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        pais = request.POST.get('pais')
+        natillera = request.POST.get('natillera')
+        cuota = request.POST.get('cuota')
+        correo = request.POST.get('correo')
+        departamento = request.POST.get('departamento')
+        periodicidad = request.POST.get('periodicidad')
+        ciudad = request.POST.get('ciudad')
+        celular = request.POST.get('celular')
+        codigo = request.POST.get('codigo')
+        id = request.POST.get('id')
+        nati = Natillera.objects.get(pk=natillera)
+        try:
+            socio = Socio.objects.get(pk=id)
+            persona = Persona.objects.get(codigo=codigo)
+            persona.natillera = nati
+            persona.nombre = nombre
+            persona.apellido = apellido
+            socio.nombre = nombre
+            socio.apellido = apellido
+            socio.periodicidad  = periodicidad
+            socio.cuota  = cuota
+            socio.pais  = pais
+            socio.departamento  = departamento
+            socio.ciudad  = ciudad
+            socio.Celular  = celular
+            socio.correo  = correo
+            socio.save()
+            persona.save()
+            messages.success(request, "Socio actualizado correctamente")
+            return redirect('propiedad_natillera',natillera)
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+            return redirect('propiedad_natillera',natillera)
         
-            
+        
+def socio_table(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    natillera  = Natillera.objects.get(usuario=usuario_actual_dict['id'])
+    socios = Socio.objects.filter(natillera=natillera)
+    context = {'usuario_actual_dict': usuario_actual_dict,"natillera": natillera,"socios":socios}
+    return render(request, 'app/menu_natillera/socio_table.html',context)
+
+
+def dar_couta(request, id_socio):
+    usuario_actual_dict = request.session.get('logueo',None)
+    natillera  = Natillera.objects.get(usuario=usuario_actual_dict['id'])
+    socio = Socio.objects.get(pk=id_socio)
+    context = {'usuario_actual_dict': usuario_actual_dict,"natillera":natillera,"socio":socio}
+    return render(request, 'app/menu_natillera/form_cuota.html', context)
+
+
+def dar_cuota_form(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        fecha = request.POST.get('fecha')
+        total = int(request.POST.get('total'))
+        nati = request.POST.get('natillera')
+        socio = Socio.objects.get(pk=id)
+        if total >= socio.cuota:
+            try:
+                socio.capital= total
+                socio.fecha_cuota= fecha
+                socio.save()
+                messages.success(request, "Pago realizado")
+                return redirect('propiedad_natillera',nati)
+            except Exception as e:
+                messages.error(request, f"Error: {e}")
+                return redirect("dar_cuota",id)
+        else:
+            messages.error(request, "la cuota es menor")
+            return redirect("dar_cuota",id)
        
 

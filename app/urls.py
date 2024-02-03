@@ -14,4 +14,9 @@ urlpatterns = [
     path("crear_socio/", views.socio_crear, name="crear_socio"),
     path("lista_personas/", views.json_personas, name='lista_personas'),
     path("lista_socios/", views.json_socio, name='lista_socios'),
+    path("propiedades_socio/<int:socio_id>", views.propiedad_socio, name='propiedades_socio'),
+    path("editar_socio/", views.editar_socio, name='editar_socio'),
+    path("table_socio/", views.socio_table,name="table_socio"),
+    path("dar_cuota/<int:id_socio>", views.dar_couta, name="dar_cuota"),
+    path("dar_cuota_form/", views.dar_cuota_form, name="dar_cuota_form"),
 ]
