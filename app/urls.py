@@ -19,4 +19,7 @@ urlpatterns = [
     path("table_socio/", views.socio_table,name="table_socio"),
     path("dar_cuota/<int:id_socio>", views.dar_couta, name="dar_cuota"),
     path("dar_cuota_form/", views.dar_cuota_form, name="dar_cuota_form"),
+    path("calendario/", views.calendario, name="calendario"),
+    path("crear_evento/", views.crear_evento, name="crear_evento"),
+    path("eliminar_evento/", views.eliminar_evento, name="eliminar_evento"),
 ]

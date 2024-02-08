@@ -49,9 +49,18 @@ class Socio(models.Model):
     Celular = models.CharField(max_length=20,blank=True, null=True)
     correo = models.CharField(max_length=256,blank=True, null=True)
     capital = models.IntegerField(blank=True, null=True)
-    fecha_cuota = models.DateField( blank=True, null=True)
+    fecha_cuota = models.DateField(blank=True, null=True)
 
     
     
     def __str__(self):
         return self.nombre
+    
+class Eventos(models.Model):
+    natillera = models.ForeignKey(Natillera, on_delete=models.CASCADE)
+    nombre_del_evento = models.CharField(max_length=256)
+    fecha_inicio = models.DateField()
+    descripcion = models.CharField(max_length=256)
+    
+    def __str__(self):
+        return self.nombre_del_evento

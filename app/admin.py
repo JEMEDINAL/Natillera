@@ -21,3 +21,8 @@ class PersonaAdmin(admin.ModelAdmin):
 @admin.register(Socio)
 class SocioAdmin(admin.ModelAdmin):
     list_display = ['id', 'natillera','codigos','nombre','apellido','periodicidad','cuota','activo','fecha_cuota','capital','ciudad']
+    
+    
+@admin.register(Eventos)
+class EventoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'natillera','nombre_del_evento','fecha_inicio']

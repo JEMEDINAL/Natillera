@@ -1,8 +1,8 @@
-function eliminar(url){
+function eliminar(){
 
-    if(confirm("Estas seguro?")){
-        location.href = url
-    }
+    confirm("Estas seguro?")
+        
+    
 }
 var dataTablePersonas;
 var dataTableSocios;
@@ -157,5 +157,7 @@ $(document).ready( function () {
         }
     });
 } );
+
+
 
 

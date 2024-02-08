@@ -1,0 +1,93 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+{% load static %}
+
+{% block titulo %}Calendario{% endblock %}
+{% block contenido %}
+{% if messages %}
+{% for message in messages %}
+<div
+  class="alert alert-{% if message.tags and message.tags != 'error' %}{{ message.tags }}{% else %}danger{% endif %} alert-dismissible fade show"
+  role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+<div class="todo">
+<div id="calendar">
+
+</div>
+<div class="crear_evento p-5">
+    <h2>Crear evento</h2>
+    <form action="{% url 'crear_evento' %}" method="post" >
+       {% csrf_token %}
+    <label for="fecha">Fecha</label>
+    <input type="date" name="fecha_evento">
+    <label for="">Titulo</label>
+    <input type="text" name="titulo">
+    <label for="">Descripcion</label>
+    <textarea name="descripcion" cols="30" rows="3" name="descripcion"></textarea>
+    <button class="btn btn-success pb-2">Crear evento</button>
+    
+</form>
+<button class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#eliminar_evento">Eliminar Evento</button>
+</div>
+</div>
+
+<div class="modal fade" id="eliminar_evento" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Crear Persona</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url 'eliminar_evento' %}" method="post">
+                {% csrf_token %}
+          <label>Elige Evento</label>
+          <select id="currency" name="evento">
+            {% for n in evento %}
+            <option value="{{ n.id }}">{{ n.titulo }}</option>
+            {% endfor %}
+        </select>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-success" onclick="eliminar()">Eliminar evento</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+       
+        var calendarUI = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarUI,{
+            events:[
+            {% for eve in evento %}
+                {
+                    title: "{{ eve.titulo }}",
+                    start:"{{ eve.fecha | date:'Y-m-d' }}",
+                    description: "{{ eve.descripcion }}",
+                },
+            {% endfor %}
+            ],
+            eventMouseEnter: function(info) {
+                info.el.style.cursor = 'pointer';
+            },
+            eventMouseLeave: function(info) {
+                info.el.style.cursor = '';
+            },
+            eventClick: function(info) {
+                alert('Titulo: ' + info.event.title + '\n' + 'Fecha: ' + info.event.start + '\n' + 'Descripción: ' + info.event.extendedProps.description);
+            }
+        });
+      
+        calendar.render();
+        calendar.setOption('locale','es');
+    });
+    
+</script>
+{% endblock contenido %}

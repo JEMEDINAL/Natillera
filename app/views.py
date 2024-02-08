@@ -5,8 +5,8 @@ from django.http.response import JsonResponse
 from django.core.serializers import serialize
 import random
 from django.core.exceptions import ValidationError
-
-
+import json
+from datetime import datetime
 def inicio(request):
     usuario_actual_dict = request.session.get('logueo', None)
     if usuario_actual_dict is not None:
@@ -324,7 +324,7 @@ def dar_cuota_form(request):
         socio = Socio.objects.get(pk=id)
         if total >= socio.cuota:
             try:
-                socio.capital= total
+                socio.capital += total
                 socio.fecha_cuota= fecha
                 socio.save()
                 messages.success(request, "Pago realizado")
@@ -335,5 +335,41 @@ def dar_cuota_form(request):
         else:
             messages.error(request, "la cuota es menor")
             return redirect("dar_cuota",id)
-       
 
+def calendario(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    natillera = Natillera.objects.get(usuario=usuario_actual_dict["id"])
+    todos_eventos = Eventos.objects.filter(natillera=natillera)
+    list_eventos=[{'id':eve.id,'titulo':eve.nombre_del_evento,'fecha': eve.fecha_inicio, 'descripcion': eve.descripcion} for eve in todos_eventos]
+    contexto = {"natillera": natillera,'evento':list_eventos}
+    return render(request, 'app/menu_natillera/calendario.html', contexto)
+
+def crear_evento(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    natillera = Natillera.objects.get(usuario=usuario_actual_dict["id"])
+    if request.method == 'POST':
+        fecha = request.POST.get('fecha_evento')
+        titulo = request.POST.get('titulo')
+        descripcion = request.POST.get('descripcion')
+        try:
+            eve = Eventos(natillera=natillera,nombre_del_evento=titulo,fecha_inicio=fecha,descripcion=descripcion)
+            eve.save()
+            messages.success(request, "Evento agregado exitosamente")
+            return redirect('calendario')
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+            return redirect('calendario')
+
+def eliminar_evento(request):
+    if request.method == 'POST':
+        id_evento = request.POST.get('evento')
+        print(id_evento)
+        try:
+            q = Eventos.objects.get(pk=id_evento)
+            q.delete()
+            messages.success(request, "Evento eliminado correctamente!!")
+            
+        except Exception as e:
+            messages.error(request, f"Error: {e}")
+    
+    return redirect('calendario')
