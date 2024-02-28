@@ -2,11 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from django.http.response import JsonResponse
-from django.core.serializers import serialize
 import random
 from django.core.exceptions import ValidationError
-import json
-from datetime import datetime
+
 def inicio(request):
     usuario_actual_dict = request.session.get('logueo', None)
     if usuario_actual_dict is not None:
@@ -373,3 +371,125 @@ def eliminar_evento(request):
             messages.error(request, f"Error: {e}")
     
     return redirect('calendario')
+
+
+def prestamos(request,socio_id):
+    usuario_actual_dict = request.session.get('logueo',None)
+    socio = Socio.objects.get(pk=socio_id)
+    natillera = Natillera.objects.get(usuario=usuario_actual_dict["id"])
+    if Prestamo.objects.filter(socio=socio).exists():
+        messages.error(request,"Error:socio ya tiene un prestamo")
+        return redirect('table_socio')
+    else:
+        contexto = {'natillera': natillera,'socio':socio}
+        return render(request, 'app/menu_natillera/prestamos.html',contexto)
+
+def crear_prestamos(request):
+    usuario_actual_dict = request.session.get('logueo',None)
+    if usuario_actual_dict == None :
+        return render(request, 'app/index.html')
+    else:
+        
+        if request.method == 'POST':
+            tipos = str(request.POST.get('tipos_c'))
+            s_id = request.POST.get("id")
+            socio = Socio.objects.get(pk=s_id)
+            if Prestamo.objects.filter(socio=socio).exists():
+                messages.error(request,"Error:socio ya tiene un prestamo")
+                return redirect('table_socio')
+            else:
+                if tipos == "cuotas":
+                    des = request.POST.get("descripcion")
+                    cuotas_elegidas = request.POST.getlist("cuota_dia")
+                    cantidad = request.POST.get('cantidad')
+                    pagara = request.POST.get('pagara')
+                    cuota = request.POST.get('cuota')
+                    try:
+                        if cuotas_elegidas:
+                            cuota_cantidad = cuotas_elegidas[0]
+                        else:
+                            tipo=tipos
+                        pres = Prestamo(
+                            socio=socio,
+                            cantidad=cantidad,
+                            deuda=pagara,
+                            cuota=cuota,
+                            cantidad_cuotas=cuota_cantidad,
+                            nota_o_descripcion=des,
+                            tipo_pretamo=tipos
+                            )
+                        pres.save()
+                        messages.success(request,"Prestamo realizado")
+                        return redirect('table_socio')
+                    except Exception as e:
+                        messages.error(request,f"Error: {e}")
+                        return redirect('table_socio')
+                elif tipos == 'paga diario':
+                    cantidad_pd = request.POST.get('cantidad_pd')
+                    pagara_pd = request.POST.get('pagara_pd')
+                    cuota_pd = request.POST.get('cuota_pd')
+                    cuota_dias_pd = request.POST.get('cuota_dias_pd')
+                    try:
+                        
+                        prestamos_pd = Prestamo(
+                            socio=socio,
+                            cantidad=cantidad_pd,
+                            deuda=pagara_pd,
+                            cuota=cuota_pd,
+                            cantidad_cuotas=cuota_dias_pd,
+                            tipo_pretamo=tipos,
+                            nota_o_descripcion="Paga diario"
+                        )
+                        prestamos_pd.save()
+                        messages.success(request,"Prestamo Realizado")
+                        return redirect('table_socio')
+                    except Exception as e:
+                        messages.error(request,f"Error: {e}")
+                        return redirect('table_socio')
+                elif tipos == "convencional":
+                    cantidad_c = request.POST.get('cantidad_c')
+                    plazo_c = request.POST.get('plazo_c')
+                    pagara_c = request.POST.get('pagara_c')
+                    cuota_mes_c = request.POST.get('cuota_mes_c')
+                    try:
+                        prestamos_c = Prestamo(
+                            socio=socio,
+                            cantidad=cantidad_c,
+                            deuda=pagara_c,
+                            cuota=cuota_mes_c,
+                            cantidad_cuotas=plazo_c,
+                            tipo_pretamo=tipos,
+                            nota_o_descripcion="Paga diario"
+                        )
+                        prestamos_c.save()
+                        messages.success(request,"Prestamo Realizado")
+                        return redirect('table_socio')
+                    except Exception as e:
+                        messages.error(request,f"Error: {e}")
+                        return redirect('table_socio')
+
+
+def pagar_deuda(request,id_socio):
+    usuario_actual_dict = request.session.get('logueo',None)
+    socios = Socio.objects.get(pk=id_socio)
+    pres = Prestamo.objects.get(socio=socios)
+    nati = Natillera.objects.get(usuario=usuario_actual_dict["id"])
+    context ={"natillera":nati,"socios":socios,"prestamos":pres}
+    return render(request, "app/menu_natillera/form_pagar_p.html",context)
+
+def pagar_pagar_deuda(request):
+    if request.method == "POST":
+        cuota = int(request.POST.get('cuota'))
+        prestamo = request.POST.get('prestamo')
+        pres = Prestamo.objects.get(pk=prestamo)
+        try:
+            pres.deuda -= cuota
+            pres.cantidad_cuotas -= 1
+            pres.save()
+            messages.success(request, "Pago realizado")
+            return redirect("table_socio")
+        except Exception as e:
+            messages.error(request,f"Error: {e}")
+            return redirect("table_socio")
+        
+    

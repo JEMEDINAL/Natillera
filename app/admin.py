@@ -26,3 +26,9 @@ class SocioAdmin(admin.ModelAdmin):
 @admin.register(Eventos)
 class EventoAdmin(admin.ModelAdmin):
     list_display = ['id', 'natillera','nombre_del_evento','fecha_inicio']
+    
+    
+    
+@admin.register(Prestamo)
+class PrestamoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'socio','cantidad','deuda','cuota','tipo_pretamo', 'cantidad_cuotas','nota_o_descripcion']

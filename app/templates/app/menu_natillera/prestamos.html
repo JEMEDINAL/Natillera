@@ -1,0 +1,228 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+
+{% load static %}
+{% block titulo %}Prestamos{% endblock titulo %}
+
+{% block contenido %}
+
+<div class="xa p-1">
+  
+<div class="btn-group x" role="group" aria-label="Basic outlined example">
+    <button   type="button" class="btn btn-outline-primary" onclick="tipo_form('formulario0')">Cuotas 8,10,11,12</button>
+    <button  type="button" class="btn btn-outline-primary" onclick="tipo_form('paga_diario')">Paga diario</button>
+    <button type="button" class="btn btn-outline-primary"onclick="tipo_form('formulario2')">Convencional</button>
+  </div>
+</div>
+<div id="formulario0" class="fga">
+    <div class="orm">
+        <h2>Cuotas 8,10,11,12</h2>
+        <form method="post" action="{% url 'crear_prestamos' %}">
+          {% csrf_token %}
+          <input type="hidden" name="tipos_c" value="cuotas">
+          <input type="hidden" value="{{ socio.id }}" name="id">
+          <div class="form-group">
+            <label for="nota">Nota o Descripcion:</label>
+            <input type="text" class="control" id="nota" name="descripcion" placeholder="Ingresa una nota o descripción">
+          </div>
+          <div class="form-group">
+            <label for="cuotas">Cuotas:</label>
+            <table class="table" id="cuotas">
+                <thead>
+                    <tr>
+                        <td>8</td>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox" value="8" id="x" name="cuota_dia" ></td>
+                        <td><input type="checkbox" value="10" id="x" name="cuota_dia" ></td>
+                        <td><input type="checkbox" value="11" id="x" name="cuota_dia" ></td>
+                        <td><input type="checkbox" value="12" id="x" name="cuota_dia" ></td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+          <div class="form-group">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad">
+          </div>
+          <div class="form-group">
+            <label for="ganancias">Ganancias:</label>
+            <input type="number" class="control" id="ganancia" name="ganancia" placeholder="Ingresa las ganancias" readonly>
+          </div>
+          <div class="form-group">
+            <label for="pagara">Pagara:</label>
+            <input type="number" class="control" id="pagara" name="pagara" placeholder="Ingresa el monto a pagar" readonly>
+          </div>
+          <div class="form-group">
+            <label for="cuota-semanal">Cuota Semanal:</label>
+            <input type="number" class="control" id="cuota_semanal" name="cuota" placeholder="Ingresa la cuota semanal" readonly>
+          </div>
+          <button type="submit" class="btn btn-primary">Continuar</button>
+        </form>
+      </div>
+
+    </div>
+
+  <div id="paga_diario" style="display: none;" class="fga">
+    <div class="ml">
+      <div class="q">
+        <div class="fr_pd">
+          <form method="post" action="{% url 'crear_prestamos' %}" class="p-1">
+            {% csrf_token %}
+            <label for="" >Cantidad</label>
+            <input type="hidden" name="tipos_c" value="paga diario">
+            <input type="hidden" name="id" value="{{ socio.id }}">
+            <input type="number" id="cantidad2" name="cantidad_pd"readonly>
+            <label for="">Ganancias</label>
+            <input type="number" id="ganancia2"readonly>
+            <label for="">Pagara</label>
+            <input type="number" id="pagara2" name="pagara_pd"readonly>
+            <label for="">Cuota diaria</label>
+            <input type="number" id="cuota_diaria2" name="cuota_pd"readonly>
+            <label for="">Cuotas</label>
+            <input type="number" id="cuota2" name="cuota_dias_pd"readonly>
+            
+            <button class="btn btn-success">Realizar prestamo</button>
+          </form>
+        </div>
+        <div class="ctbl p-2">
+          <h3 class="o">Cuotas</h3>
+            <table class="table">
+              <thead>
+              <tr>
+                <th>$</th>
+                <th>60</th>
+                <th>40</th>
+                <th>30</th>
+                <th>24</th>
+                <th>20</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>100000</td>
+                  <td><input type="checkbox" value="60_100000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_100000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_100000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_100000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_100000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>200000</td>
+                  <td><input type="checkbox" value="60_200000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_200000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_200000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_200000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_200000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>300000</td>
+                  <td><input type="checkbox" value="60_300000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_300000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_300000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_300000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_300000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>400000</td>
+                  <td><input type="checkbox" value="60_400000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_400000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_400000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_400000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_400000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>500000</td>
+                  <td><input type="checkbox" value="60_500000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_500000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_500000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_500000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_500000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>600000</td>
+                  <td><input type="checkbox" value="60_600000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_600000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_600000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_600000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_600000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>700000</td>
+                  <td><input type="checkbox" value="60_700000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_700000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_700000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_700000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_700000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>800000</td>
+                  <td><input type="checkbox" value="60_800000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_800000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_800000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_800000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_800000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>900000</td>
+                  <td><input type="checkbox" value="60_900000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_900000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_900000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_900000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_900000" id="x2" name="dias" ></td>
+                </tr>
+                <tr>
+                  <td>1000000</td>
+                  <td><input type="checkbox" value="60_1000000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="40_1000000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="30_1000000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="24_1000000" id="x2" name="dias" ></td>
+                  <td><input type="checkbox" value="20_1000000" id="x2" name="dias" ></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div id="formulario2" style="display: none;" class="fga">
+   <div class="convencional">
+    <div class="form_convencional">
+      <h2>Prestamo Convencional</h2>
+      <form method="post" action="{% url 'crear_prestamos' %}">
+        {% csrf_token %}
+        <input type="hidden" name="tipos_c" value="convencional">
+        <input type="hidden" name="id" value="{{ socio.id }}">
+        <label for="" >Cantidad</label>
+        <input type="number" name="cantidad_c" id="cantidad_p">
+        <label >Interes Mes</label>
+        <input type="number"  id="interes_mes_p">
+        <label>Cargo fijo</label>
+        <input type="number" id="cargo_fijo">
+        <label for="">Plazo</label>
+        <input type="number" name="plazo_c" id="plazo" >
+        <label for="">Pagara</label>
+        <input type="number" name="pagara_c" id="pagara_c" readonly>
+        <label for="">Cuota al mes</label>
+        <input type="number" name="cuota_mes_c" id="cuota_mes" readonly>
+        <button class="btn btn-success">Comfirmar</button>
+      </form>
+
+
+    </div>
+   </div>
+</div>
+
+
+
+{% endblock contenido %}
+
+
+
+

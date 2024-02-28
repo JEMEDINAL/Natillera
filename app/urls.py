@@ -22,4 +22,8 @@ urlpatterns = [
     path("calendario/", views.calendario, name="calendario"),
     path("crear_evento/", views.crear_evento, name="crear_evento"),
     path("eliminar_evento/", views.eliminar_evento, name="eliminar_evento"),
+    path("prestamos/<int:socio_id>", views.prestamos, name="prestamos"),
+    path("crear_prestamos/", views.crear_prestamos, name="crear_prestamos"),
+    path("pagar_deuda/<int:id_socio>", views.pagar_deuda, name="pagar_deuda"),
+    path("pagar_pagar_deuda/", views.pagar_pagar_deuda, name="pagar_pagar_deuda"),
 ]

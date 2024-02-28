@@ -50,12 +50,23 @@ class Socio(models.Model):
     correo = models.CharField(max_length=256,blank=True, null=True)
     capital = models.IntegerField(blank=True, null=True)
     fecha_cuota = models.DateField(blank=True, null=True)
+    
 
     
     
     def __str__(self):
         return self.nombre
     
+    
+class Prestamo(models.Model):
+    socio = models.ForeignKey(Socio,on_delete=models.CASCADE)
+    cantidad = models.IntegerField(blank=True, null=True)
+    deuda = models.IntegerField(blank=True, null=True)
+    cuota = models.IntegerField(blank=True, null=True)
+    cantidad_cuotas = models.IntegerField(blank=True, null=True)
+    tipo_pretamo = models.CharField(max_length=256,default="nada",blank=True, null=True)
+    nota_o_descripcion = models.CharField(max_length=265,default="nada",blank=True, null=True)
+       
 class Eventos(models.Model):
     natillera = models.ForeignKey(Natillera, on_delete=models.CASCADE)
     nombre_del_evento = models.CharField(max_length=256)

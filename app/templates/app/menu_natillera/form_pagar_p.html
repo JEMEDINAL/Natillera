@@ -1,0 +1,23 @@
+{% extends "app/menu_natillera/base_menu_nati.html" %}
+{% load static %}
+
+{% block contenido %}
+
+<div class="pg_d">
+    <div id="form_pg" style="text-align: center;" class="p-5">
+        <form action="{% url 'pagar_pagar_deuda'  %}" method="post">
+            {% csrf_token %}
+            <label>Deuda</label>
+            <input type="number" value="{{ prestamos.deuda }}">
+            <label for="">Cuota</label>
+            <input type="number" value="{{ prestamos.cuota }}" name="cuota">
+            <label for="">Cantidad de cuotas</label>
+            <input type="number" value="{{ prestamos.cantidad_cuotas }}">
+           <input type="hidden" value="{{ prestamos.id }}" name="prestamo">
+
+            <button class="btn btn-success">Confirmacion</button>
+        </form>
+    </div>
+</div>
+
+{% endblock contenido %}
